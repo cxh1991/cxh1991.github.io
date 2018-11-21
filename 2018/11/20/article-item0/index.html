@@ -79,19 +79,17 @@
 
 
 
-<meta name="description" content="这是摘要">
+<meta name="description" content="场景概述弹窗是一种常见的交互方式，而蒙层是弹窗必不可少的元素，用于隔断页面与弹窗区块，暂时阻断页面的交互。但是，在蒙层元素中滑动的时候，滑到内容的尽头时，再继续滑动，蒙层底部的页面会开始滚动，显然这不是我们想要的效果，因此需要阻止这种行为…">
 <meta property="og:type" content="article">
-<meta property="og:title" content="文章标题1">
+<meta property="og:title" content="禁止蒙层底部页面跟随滚动">
 <meta property="og:url" content="http://yoursite.com/2018/11/20/article-item0/index.html">
 <meta property="og:site_name" content="行胜博客">
-<meta property="og:description" content="这是摘要">
+<meta property="og:description" content="场景概述弹窗是一种常见的交互方式，而蒙层是弹窗必不可少的元素，用于隔断页面与弹窗区块，暂时阻断页面的交互。但是，在蒙层元素中滑动的时候，滑到内容的尽头时，再继续滑动，蒙层底部的页面会开始滚动，显然这不是我们想要的效果，因此需要阻止这种行为…">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/images/me.jpeg">
-<meta property="og:updated_time" content="2018-11-20T07:46:01.806Z">
+<meta property="og:updated_time" content="2018-11-21T02:57:58.167Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="文章标题1">
-<meta name="twitter:description" content="这是摘要">
-<meta name="twitter:image" content="http://yoursite.com/images/me.jpeg">
+<meta name="twitter:title" content="禁止蒙层底部页面跟随滚动">
+<meta name="twitter:description" content="场景概述弹窗是一种常见的交互方式，而蒙层是弹窗必不可少的元素，用于隔断页面与弹窗区块，暂时阻断页面的交互。但是，在蒙层元素中滑动的时候，滑到内容的尽头时，再继续滑动，蒙层底部的页面会开始滚动，显然这不是我们想要的效果，因此需要阻止这种行为…">
 
 
 
@@ -127,7 +125,7 @@
 
 
 
-  <title>文章标题1 | 行胜博客</title>
+  <title>禁止蒙层底部页面跟随滚动 | 行胜博客</title>
   
 
 
@@ -271,7 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">文章标题1</h1>
+          <h1 class="post-title" itemprop="name headline">禁止蒙层底部页面跟随滚动</h1>
         
 
         <div class="post-meta">
@@ -321,9 +319,33 @@
       
 
       
-        <p>这是摘要</p>
-<a id="more"></a>
-<p>这是全文<br><img src="/images/me.jpeg" alt=""></p>
+        <h2 id="场景概述"><a href="#场景概述" class="headerlink" title="场景概述"></a>场景概述</h2><p>弹窗是一种常见的交互方式，而蒙层是弹窗必不可少的元素，用于隔断页面与弹窗区块，暂时阻断页面的交互。但是，在蒙层元素中滑动的时候，滑到内容的尽头时，再继续滑动，蒙层底部的页面会开始滚动，显然这不是我们想要的效果，因此需要阻止这种行为…<br><a id="more"></a><br><!-- ![](/images/me.jpeg) --></p>
+<h2 id="方案分析"><a href="#方案分析" class="headerlink" title="方案分析"></a>方案分析</h2><h3 id="方案一"><a href="#方案一" class="headerlink" title="方案一"></a>方案一</h3><ul>
+<li>打开蒙层时，给body添加样式：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">overflow: hidden;</span><br><span class="line">height: <span class="number">100</span>%;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>在某些机型下，你可能还需要给根节点添加样式：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">overflow: hidden;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>关闭蒙层时，移除以上样式。</li>
+</ul>
+<p><strong>优点：</strong> 简单方便，只需添加css样式，没有复杂的逻辑。<br><strong>缺点：</strong> 兼容性不好，适用于pc，移动端就尴尬了。 部分安卓机型以及safari中，无法无法阻止底部页面滚动。<br>如果需要应用于移动端，那么你可能需要方案二。</p>
+<h3 id="方案二"><a href="#方案二" class="headerlink" title="方案二"></a>方案二</h3><p>就是利用移动端的touch事件，来阻止默认行为（这里可以理解为页面滚动就是默认行为）。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// node为蒙层容器dom节点</span></span><br><span class="line">node.addEventListener(<span class="string">'touchstart'</span>, e =&gt; &#123;</span><br><span class="line">  e.preventDefault()</span><br><span class="line">&#125;, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure></p>
+<p>简单粗暴，滚动时底部页面也无法动弹了。假如你的蒙层内容不会有滚动条，那么上述方法prefect。<br>但是，最怕空气突然安静，假如蒙层内容有滚动条的话，那么它再也无法动弹了。因此我们需要写一些js逻辑来判断要不要阻止默认行为，复杂程度明显增加。<br>具体思路：判定蒙层内容是否滚动到尽头，是则阻止默认行为，反之任它横行。</p>
+<p>Tip：这里我发现了一个小技巧，可以省略不少代码。在一次滑动中，若蒙层内容可以滚动，则蒙层内容滚动，过程中即使蒙层内容已滚至尽头，只要不松手（可以理解为<code>touchend</code>事件触发前），继续滑动时页面内容不会滚动，此时若松手再继续滚动，则页面内容会滚动。利用这一个小技巧，我们可以精简优化我们的代码逻辑。</p>
+<p>示例代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">body &#123;</span><br><span class="line">  margin: <span class="number">0</span>;</span><br><span class="line">  padding: <span class="number">20</span>px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.btn &#123;</span><br><span class="line">  border: none;</span><br><span class="line">  outline: none;</span><br><span class="line">  font-size: inherit;</span><br><span class="line">  border-radius: <span class="number">4</span>px;</span><br><span class="line">  padding: <span class="number">1</span>em;</span><br><span class="line">  width: <span class="number">100</span>%;</span><br><span class="line">  margin: <span class="number">1</span>em <span class="number">0</span>;</span><br><span class="line">  color: #fff;</span><br><span class="line">  background-color: #ff5777;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.container &#123;</span><br><span class="line">  position: fixed;</span><br><span class="line">  top: <span class="number">0</span>;</span><br><span class="line">  left: <span class="number">0</span>;</span><br><span class="line">  bottom: <span class="number">0</span>;</span><br><span class="line">  right: <span class="number">0</span>;</span><br><span class="line">  z-index: <span class="number">1001</span>;</span><br><span class="line">  display: none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.layer &#123;</span><br><span class="line">  position: absolute;</span><br><span class="line">  top: <span class="number">0</span>;</span><br><span class="line">  left: <span class="number">0</span>;</span><br><span class="line">  bottom: <span class="number">0</span>;</span><br><span class="line">  right: <span class="number">0</span>;</span><br><span class="line">  z-index: <span class="number">1</span>;</span><br><span class="line">  background-color: rgba(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">.3</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.content &#123;</span><br><span class="line">  position: absolute;</span><br><span class="line">  bottom: <span class="number">0</span>;</span><br><span class="line">  left: <span class="number">0</span>;</span><br><span class="line">  right: <span class="number">0</span>;</span><br><span class="line">  height: <span class="number">50</span>%;</span><br><span class="line">  z-index: <span class="number">2</span>;</span><br><span class="line">  background-color: #f6f6f6;</span><br><span class="line">  overflow-y: auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"page"</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 这里多添加一些，直至出现滚动条 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>页面<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>页面<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"btn"</span>&gt;</span>打开蒙层<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>页面<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"layer"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"content"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 这里多添加一些，直至出现滚动条 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>蒙层<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>蒙层<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>蒙层<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> btnNode = <span class="built_in">document</span>.querySelector(<span class="string">'.btn'</span>)</span><br><span class="line"><span class="keyword">const</span> containerNode = <span class="built_in">document</span>.querySelector(<span class="string">'.container'</span>)</span><br><span class="line"><span class="keyword">const</span> layerNode = <span class="built_in">document</span>.querySelector(<span class="string">'.layer'</span>)</span><br><span class="line"><span class="keyword">const</span> contentNode = <span class="built_in">document</span>.querySelector(<span class="string">'.content'</span>)</span><br><span class="line"><span class="keyword">let</span> startY = <span class="number">0</span> <span class="comment">// 记录开始滑动的坐标，用于判断滑动方向</span></span><br><span class="line"><span class="keyword">let</span> status = <span class="number">0</span> <span class="comment">// 0：未开始，1：已开始，2：滑动中</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 打开蒙层</span></span><br><span class="line">btnNode.addEventListener(<span class="string">'click'</span>, () =&gt; &#123;</span><br><span class="line">  containerNode.style.display = <span class="string">'block'</span></span><br><span class="line">&#125;, <span class="literal">false</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 蒙层部分始终阻止默认行为</span></span><br><span class="line">layerNode.addEventListener(<span class="string">'touchstart'</span>, e =&gt; &#123;</span><br><span class="line">  e.preventDefault()</span><br><span class="line">&#125;, <span class="literal">false</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 核心部分</span></span><br><span class="line">contentNode.addEventListener(<span class="string">'touchstart'</span>, e =&gt; &#123;</span><br><span class="line">  status = <span class="number">1</span></span><br><span class="line">  startY = e.targetTouches[<span class="number">0</span>].pageY</span><br><span class="line">&#125;, <span class="literal">false</span>)</span><br><span class="line"></span><br><span class="line">contentNode.addEventListener(<span class="string">'touchmove'</span>, e =&gt; &#123;</span><br><span class="line">  <span class="comment">// 判定一次就够了</span></span><br><span class="line">  <span class="keyword">if</span> (status !== <span class="number">1</span>) <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">  status = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> t = e.target || e.srcElement</span><br><span class="line">  <span class="keyword">let</span> py = e.targetTouches[<span class="number">0</span>].pageY</span><br><span class="line">  <span class="keyword">let</span> ch = t.clientHeight <span class="comment">// 内容可视高度</span></span><br><span class="line">  <span class="keyword">let</span> sh = t.scrollHeight <span class="comment">// 内容滚动高度</span></span><br><span class="line">  <span class="keyword">let</span> st = t.scrollTop <span class="comment">// 当前滚动高度</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 已经到头部尽头了还要向上滑动，阻止它</span></span><br><span class="line">  <span class="keyword">if</span> (st === <span class="number">0</span> &amp;&amp; startY &lt; py) &#123;</span><br><span class="line">    e.preventDefault()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 已经到低部尽头了还要向下滑动，阻止它</span></span><br><span class="line">  <span class="keyword">if</span> ((st === sh - ch) &amp;&amp; startY &gt; py) &#123;</span><br><span class="line">    e.preventDefault()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;, <span class="literal">false</span>)</span><br><span class="line"></span><br><span class="line">contentNode.addEventListener(<span class="string">'touchend'</span>, e =&gt; &#123;</span><br><span class="line">  status = <span class="number">0</span></span><br><span class="line">&#125;, <span class="literal">false</span>)</span><br></pre></td></tr></table></figure>
+<p>问题虽然是解决了，但是回头来看，复杂程度和代码量明显增加了一个梯度。 本着简单方便的原则，我们是不是还可以探索其他的方案呢？</p>
+<p>既然touch事件判定比较复杂，何不跳出这个框框，另辟蹊径，探索更加合适的方案。 于是，便有了我们的方案三。</p>
+<h3 id="方案三"><a href="#方案三" class="headerlink" title="方案三"></a>方案三</h3><p>来讲讲我的思路，既然我们要阻止页面滚动，那么何不将其固定在视窗（即<code>position: fixed</code>），这样它就无法滚动了，当蒙层关闭时再释放。 当然还有一些细节要考虑，将页面固定视窗后，内容会回头最顶端，这里我们需要记录一下，同步top值。</p>
+<p>示例代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> bodyEl = <span class="built_in">document</span>.body</span><br><span class="line"><span class="keyword">let</span> top = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">stopBodyScroll</span> (<span class="params">isFixed</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (isFixed) &#123;</span><br><span class="line">    top = <span class="built_in">window</span>.scrollY</span><br><span class="line"></span><br><span class="line">    bodyEl.style.position = <span class="string">'fixed'</span></span><br><span class="line">    bodyEl.style.top = -top + <span class="string">'px'</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    bodyEl.style.position = <span class="string">''</span></span><br><span class="line">    bodyEl.style.top = <span class="string">''</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">window</span>.scrollTo(<span class="number">0</span>, top) <span class="comment">// 回到原先的top</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>若应用场景是pc，推荐方案一，真的是不要太方便</li>
+<li>若应用场景是h5，你可以采用方案二，但是我建议你采用方案三</li>
+<li>若应用场景是全平台，那么方案三你不容错过</li>
+</ul>
+<p>本文到这里也即将结束了，在这里我强烈推荐一下方案三，原因在于简单、方便、兼容性好，一次封装，永久受用。</p>
+<p>文章出处 <a href="https://juejin.im/post/5a27cad56fb9a045186a9d94" target="_blank" rel="noopener">https://juejin.im/post/5a27cad56fb9a045186a9d94</a></p>
 
       
     </div>
@@ -344,22 +366,6 @@
       
       
 
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/11/20/article-item1/" rel="prev" title="文章标题2">
-                文章标题2 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
       
 
       
@@ -408,8 +414,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -426,7 +441,7 @@
               
                 <a href="/archives">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -469,6 +484,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#场景概述"><span class="nav-number">1.</span> <span class="nav-text">场景概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方案分析"><span class="nav-number">2.</span> <span class="nav-text">方案分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方案一"><span class="nav-number">2.1.</span> <span class="nav-text">方案一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案二"><span class="nav-number">2.2.</span> <span class="nav-text">方案二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方案三"><span class="nav-number">2.3.</span> <span class="nav-text">方案三</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
